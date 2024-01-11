@@ -1,0 +1,15 @@
+{
+    "planId": "TEL987654321",
+    "user": {
+        "name": "Bob Smith",
+        "email": "bob.smith@example.com",
+        "phoneNumber": "+1 (987) 654-3210"
+    },
+    "serviceSummary": {
+        "serviceType": "Mobile Plan",
+        "activationDate": "2023-11-15",
+        "contractExpirationDate": "2024-11-15",
+        "annualPayment": 700.00,
+        "additionalServices": "Unlimited Data, International Roaming"
+    }
+}

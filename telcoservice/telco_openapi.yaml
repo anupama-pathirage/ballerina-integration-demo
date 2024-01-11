@@ -1,0 +1,181 @@
+openapi: 3.0.1
+info:
+  title: Telco
+  version: 0.1.0
+servers:
+- url: "{server}:{port}/telco"
+  variables:
+    server:
+      default: http://localhost
+    port:
+      default: "9090"
+paths:
+  /packages:
+    post:
+      operationId: postPackages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PackageRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+components:
+  schemas:
+    PackageRequest:
+      required:
+      - customer
+      - id
+      - serviceDetails
+      type: object
+      properties:
+        id:
+          type: string
+        customer:
+          $ref: '#/components/schemas/Customer'
+        serviceDetails:
+          $ref: '#/components/schemas/ServiceDetails'
+    ErrorPayload:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason phrase
+        path:
+          type: string
+          description: Request path
+        method:
+          type: string
+          description: Method type of the request
+        message:
+          type: string
+          description: Error message
+        timestamp:
+          type: string
+          description: Timestamp of the error
+        status:
+          type: integer
+          description: Relevant HTTP status code
+          format: int32
+    ServiceDetails:
+      required:
+      - activationDate
+      - additionalServices
+      - contractExpirationDate
+      - initialPayment
+      - monthlyFee
+      - serviceType
+      type: object
+      properties:
+        serviceType:
+          type: string
+        activationDate:
+          type: string
+        contractExpirationDate:
+          type: string
+        monthlyFee:
+          type: number
+          format: double
+        initialPayment:
+          type: number
+          format: double
+        additionalServices:
+          type: array
+          items:
+            type: string
+    User:
+      required:
+      - email
+      - name
+      - phoneNumber
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+    Address:
+      required:
+      - city
+      - state
+      - street
+      - zipCode
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+    Customer:
+      required:
+      - address
+      - email
+      - firstName
+      - lastName
+      - phoneNumber
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+    Package:
+      required:
+      - planId
+      - serviceSummary
+      - user
+      type: object
+      properties:
+        planId:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        serviceSummary:
+          $ref: '#/components/schemas/ServiceSummary'
+    ServiceSummary:
+      required:
+      - activationDate
+      - additionalServices
+      - annualPayment
+      - contractExpirationDate
+      - serviceType
+      type: object
+      properties:
+        serviceType:
+          type: string
+        activationDate:
+          type: string
+        contractExpirationDate:
+          type: string
+        annualPayment:
+          type: number
+          format: double
+        additionalServices:
+          type: string

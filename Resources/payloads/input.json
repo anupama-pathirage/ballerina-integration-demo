@@ -1,0 +1,26 @@
+{
+    "id": "TEL987654321",
+    "customer": {
+        "firstName": "Bob",
+        "lastName": "Smith",
+        "email": "bob.smith@example.com",
+        "phoneNumber": "+1 (987) 654-3210",
+        "address": {
+            "street": "456 Telecom Lane",
+            "city": "Techville",
+            "state": "NY",
+            "zipCode": "54321"
+        }
+    },
+    "serviceDetails": {
+        "serviceType": "Mobile Plan",
+        "activationDate": "2023-11-15",
+        "contractExpirationDate": "2024-11-15",
+        "monthlyFee": 50.00,
+        "initialPayment": 100.00,
+        "additionalServices": [
+            "Unlimited Data",
+            "International Roaming"
+        ]
+    }
+}
