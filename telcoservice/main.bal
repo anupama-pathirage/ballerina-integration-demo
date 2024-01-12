@@ -3,6 +3,7 @@ import ballerina/lang.'string as string0;
 import ballerinax/googleapis.sheets;
 import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
+import ballerina/log;
 
 configurable string sheetsToken = ?;
 configurable string sheetsName = ?;
@@ -24,15 +25,20 @@ final mysql:Client mysql = check new (host, user, password, database);
 service /telco on new http:Listener(9090) {
 
     //http://localhost:9090/telco/packages
-    resource function post packages(PackageRequest[] payload) returns Package[]|error {
+    resource function post packages(PackageRequest[] payload) returns Package[] {
         Package[] packages = [];
         foreach PackageRequest packageReq in payload {
             //Create summary 
             Package package = transformRequestToPackage(packageReq);
-            //Add to sheet
-            _ = check sheets->appendValue(sheetsId, [package.planId, package.user.name, package.serviceSummary.annualPayment, package.serviceSummary.additionalServices], {sheetName: sheetsName});
-            //Add to db
-            _ = check mysql->execute(`INSERT INTO Packages (id, name, payment, services) VALUES (${package.planId}, ${package.user.name}, ${package.serviceSummary.annualPayment}, ${package.serviceSummary.additionalServices})`);
+
+            do {
+                //Add to sheet
+                _ = check sheets->appendValue(sheetsId, [package.planId, package.user.name, package.serviceSummary.annualPayment, package.serviceSummary.additionalServices], {sheetName: sheetsName});
+                //Add to db
+                _ = check mysql->execute(`INSERT INTO Packages (id, name, payment, services) VALUES (${package.planId}, ${package.user.name}, ${package.serviceSummary.annualPayment}, ${package.serviceSummary.additionalServices})`);
+            } on fail error err {
+                log:printError("Failed to persist package details", err, id = packageReq.id);
+            }
             //Add to array
             packages.push(package);
         }
