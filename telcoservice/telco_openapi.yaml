@@ -30,11 +30,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Package'
         "500":
-          description: Internal server error
+          description: InternalServerError
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/ErrorPayload'
+                type: string
 components:
   schemas:
     PackageRequest:
@@ -50,28 +50,6 @@ components:
           $ref: '#/components/schemas/Customer'
         serviceDetails:
           $ref: '#/components/schemas/ServiceDetails'
-    ErrorPayload:
-      type: object
-      properties:
-        reason:
-          type: string
-          description: Reason phrase
-        path:
-          type: string
-          description: Request path
-        method:
-          type: string
-          description: Method type of the request
-        message:
-          type: string
-          description: Error message
-        timestamp:
-          type: string
-          description: Timestamp of the error
-        status:
-          type: integer
-          description: Relevant HTTP status code
-          format: int32
     ServiceDetails:
       required:
       - activationDate
